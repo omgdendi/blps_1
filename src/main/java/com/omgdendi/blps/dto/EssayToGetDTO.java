@@ -15,6 +15,6 @@ public class EssayToGetDTO {
     private String title;
     private String author;
     private String content;
-    private Date dateCreate;
+    private Date dateLoad;
     private String category;
 }

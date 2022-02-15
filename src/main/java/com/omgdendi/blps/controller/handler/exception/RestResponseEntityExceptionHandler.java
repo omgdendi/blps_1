@@ -4,11 +4,7 @@ import com.omgdendi.blps.exception.CategoryAlreadyExistException;
 import com.omgdendi.blps.exception.CategoryNotFoundException;
 import com.omgdendi.blps.exception.EssayNotFoundException;
 import com.omgdendi.blps.exception.UserAlreadyExistException;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -16,7 +12,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-
     @ExceptionHandler(value = {
             Exception.class
     })

@@ -2,6 +2,7 @@ package com.omgdendi.blps.service;
 
 import com.omgdendi.blps.dto.UserDTO;
 import com.omgdendi.blps.entity.UserEntity;
+import com.omgdendi.blps.exception.CategoryAlreadyExistException;
 import com.omgdendi.blps.exception.UserAlreadyExistException;
 import com.omgdendi.blps.mappers.UserMapper;
 import com.omgdendi.blps.repository.UserRepo;
@@ -18,11 +19,11 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public UserEntity registration(UserEntity user) throws UserAlreadyExistException {
-        if (userRepo.findByUsername(user.getUsername()) != null) {
-            throw new UserAlreadyExistException();
+    public UserDTO registration(UserDTO user) throws UserAlreadyExistException {
+        if (userRepo.findByUsername(user.getUsername()).isPresent()) {
+            throw new CategoryAlreadyExistException();
         }
-        return userRepo.save(user);
+        return UserMapper.INSTANCE.toDTO(userRepo.save(UserMapper.INSTANCE.toEntity(user)));
     }
 
     public UserDTO getUser(Long id) {

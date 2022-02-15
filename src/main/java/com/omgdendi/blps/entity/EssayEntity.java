@@ -3,6 +3,7 @@ package com.omgdendi.blps.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -12,10 +13,12 @@ public class EssayEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private String title;
+    @NotNull
     private String content;
     private String author;
-    private Date dateCreate;
+    @NotNull
     private Date dateLoad;
 
     @ManyToOne(fetch = FetchType.LAZY)

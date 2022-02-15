@@ -44,7 +44,6 @@ public class EssayService {
         entity.setCategory(category);
         entity.setUser(user);
         entity.setDateLoad(new Date());
-        entity.setDateCreate(new Date());
         return EssayMapper.INSTANCE.toDTO(essayRepo.save(entity));
     }
 

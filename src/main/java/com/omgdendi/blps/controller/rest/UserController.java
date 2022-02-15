@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registration(@RequestBody UserEntity user) {
+    public ResponseEntity<?> registration(@RequestBody UserDTO user) {
         userService.registration(user);
         return ResponseEntity.ok("Пользователь был успешно сохранен");
     }
