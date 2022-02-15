@@ -1,6 +1,6 @@
 package com.omgdendi.blps.dto;
 
-import com.omgdendi.blps.entity.EssayEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,8 +8,8 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-public class EssayDto {
-    private Long id;
+@AllArgsConstructor
+public class EssayDTO {
     private String title;
     private String author;
     private String content;

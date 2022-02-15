@@ -1,11 +1,14 @@
 package com.omgdendi.blps.service;
 
-import com.omgdendi.blps.dto.EssayToGetDto;
+import com.omgdendi.blps.dto.EssayToGetDTO;
 import com.omgdendi.blps.entity.CategoryEntity;
 import com.omgdendi.blps.entity.EssayEntity;
 import com.omgdendi.blps.entity.UserEntity;
-import com.omgdendi.blps.dto.EssayDto;
+import com.omgdendi.blps.dto.EssayDTO;
 import com.omgdendi.blps.exception.CategoryNotFoundException;
+import com.omgdendi.blps.exception.EssayNotFoundException;
+import com.omgdendi.blps.mappers.EssayMapper;
+import com.omgdendi.blps.mappers.EssayToGetMapper;
 import com.omgdendi.blps.repository.EssayRepo;
 import com.omgdendi.blps.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +21,20 @@ import java.util.stream.Collectors;
 @Service
 public class EssayService {
 
-    @Autowired
     private EssayRepo essayRepo;
 
-    @Autowired
     private UserRepo userRepo;
 
-    @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    public EssayService(EssayRepo essayRepo, UserRepo userRepo, CategoryService categoryService) {
+        this.essayRepo = essayRepo;
+        this.userRepo = userRepo;
+        this.categoryService = categoryService;
+    }
 
-    public EssayDto createEssay(EssayDto essay) throws CategoryNotFoundException {
+    public EssayDTO createEssay(EssayDTO essay) throws CategoryNotFoundException {
         UserEntity user = userRepo.findById(essay.getUserId()).get();
         CategoryEntity category = categoryService.getCategoryByName(essay.getCategoryName());
         EssayEntity entity = new EssayEntity();
@@ -37,35 +43,27 @@ public class EssayService {
         entity.setContent(essay.getContent());
         entity.setCategory(category);
         entity.setUser(user);
-        entity.setDate_load(new Date());
-        entity.setDate_create(new Date());
-        return this.convertTo(essayRepo.save(entity));
+        entity.setDateLoad(new Date());
+        entity.setDateCreate(new Date());
+        return EssayMapper.INSTANCE.toDTO(essayRepo.save(entity));
     }
 
-    public List<EssayToGetDto> getEssaysByTitle(String title) {
+    public EssayToGetDTO getEssay(Long id) throws EssayNotFoundException {
+        EssayEntity essay = essayRepo.findById(id).get();
+        if (essay == null) {
+            throw new EssayNotFoundException();
+        }
+        return EssayToGetMapper.INSTANCE.toDTO(essay);
+    }
+
+    public List<EssayToGetDTO> getEssaysByTitle(String title) {
         List<EssayEntity> essays = essayRepo.findAllByTitle(title);
-        return essays.stream().map(essay -> this.convertToGet(essay)).collect(Collectors.toList());
+        return essays.stream().map(essay -> EssayToGetMapper.INSTANCE.toDTO(essay)).collect(Collectors.toList());
     }
 
-    private EssayDto convertTo(EssayEntity entity) {
-        EssayDto essay = new EssayDto();
-        essay.setId(entity.getId());
-        essay.setTitle(entity.getTitle());
-        essay.setAuthor(entity.getAuthor());
-        essay.setCategoryName(entity.getCategory().getName());
-        essay.setContent(entity.getContent());
-        essay.setUserId(entity.getUser().getId());
-        essay.setDateCreate(entity.getDate_create());
-        return essay;
+    public List<EssayToGetDTO> getEssaysByCategory(Long categoryId) {
+        List<EssayEntity> essays = essayRepo.findAllByCategory(categoryId);
+        return essays.stream().map(essay -> EssayToGetMapper.INSTANCE.toDTO(essay)).collect(Collectors.toList());
     }
 
-    private EssayToGetDto convertToGet(EssayEntity entity) {
-        EssayToGetDto essay = new EssayToGetDto();
-        essay.setId(entity.getId());
-        essay.setTitle(entity.getTitle());
-        essay.setAuthor(entity.getAuthor());
-        essay.setContent(entity.getContent());
-        essay.setDateCreate(entity.getDate_create());
-        return essay;
-    }
 }

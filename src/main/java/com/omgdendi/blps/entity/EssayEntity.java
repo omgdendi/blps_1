@@ -1,6 +1,5 @@
 package com.omgdendi.blps.entity;
 
-
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,8 +15,8 @@ public class EssayEntity {
     private String title;
     private String content;
     private String author;
-    private Date date_create;
-    private Date date_load;
+    private Date dateCreate;
+    private Date dateLoad;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

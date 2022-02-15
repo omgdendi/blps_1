@@ -10,4 +10,7 @@ public interface EssayRepo extends CrudRepository<EssayEntity, Long> {
 
     @Query(value = "SELECT * FROM essay WHERE title ~ ?1", nativeQuery = true)
     List<EssayEntity> findAllByTitle(String title);
+
+    @Query(value = "SELECT * FROM essay WHERE category_id = ?1", nativeQuery = true)
+    List<EssayEntity> findAllByCategory(Long id);
 }

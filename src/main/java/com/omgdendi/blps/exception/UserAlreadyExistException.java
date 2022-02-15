@@ -1,7 +1,7 @@
 package com.omgdendi.blps.exception;
 
-public class UserAlreadyExistException extends Exception{
-    public UserAlreadyExistException(String message) {
-        super(message);
+public class UserAlreadyExistException extends RuntimeException{
+    public UserAlreadyExistException() {
+        super("Пользователь с таким именем уже существует");
     }
 }

@@ -1,6 +1,7 @@
 package com.omgdendi.blps.dto;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,10 +9,12 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-public class EssayToGetDto {
+@AllArgsConstructor
+public class EssayToGetDTO {
     private Long id;
     private String title;
     private String author;
     private String content;
     private Date dateCreate;
+    private String category;
 }
