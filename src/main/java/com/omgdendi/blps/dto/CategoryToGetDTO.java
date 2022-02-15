@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryToGetDTO {
+    private Long id;
     private String name;
     private int count;
 }
