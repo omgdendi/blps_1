@@ -19,6 +19,6 @@ public class UserEntity {
     @NotNull
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<EssayEntity> essays = new ArrayList<EssayEntity>();
 }

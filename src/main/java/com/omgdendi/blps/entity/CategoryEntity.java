@@ -17,6 +17,6 @@ public class CategoryEntity {
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<EssayEntity> essay = new ArrayList<EssayEntity>();
 }
