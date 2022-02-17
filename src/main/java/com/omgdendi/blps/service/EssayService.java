@@ -65,4 +65,9 @@ public class EssayService {
         return essays.stream().map(essay -> EssayToGetMapper.INSTANCE.toDTO(essay)).collect(Collectors.toList());
     }
 
+    public List<EssayToGetDTO> getRecentEssays(int count) {
+        List<EssayEntity> essays = essayRepo.findAllRecentEssays(count);
+        return essays.stream().map(essay -> EssayToGetMapper.INSTANCE.toDTO(essay)).collect(Collectors.toList());
+    }
+
 }

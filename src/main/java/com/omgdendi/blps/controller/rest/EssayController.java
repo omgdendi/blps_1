@@ -39,4 +39,9 @@ public class EssayController {
     public ResponseEntity<List<EssayToGetDTO>> getEssaysByCategory(@RequestParam Long categoryId) {
         return ResponseEntity.ok(essayService.getEssaysByCategory(categoryId));
     }
+
+    @GetMapping("/recent")
+    public ResponseEntity<List<EssayToGetDTO>> getRecentEssays(int count) {
+        return ResponseEntity.ok(essayService.getRecentEssays(count));
+    }
 }

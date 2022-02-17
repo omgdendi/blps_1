@@ -13,4 +13,7 @@ public interface EssayRepo extends CrudRepository<EssayEntity, Long> {
 
     @Query(value = "SELECT * FROM essay WHERE category_id = ?1", nativeQuery = true)
     List<EssayEntity> findAllByCategory(Long id);
+
+    @Query(value = "SELECT * FROM essay ORDER BY date_load DESC LIMIT ?1", nativeQuery = true)
+    List<EssayEntity> findAllRecentEssays(int count);
 }

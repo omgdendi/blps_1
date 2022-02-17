@@ -2,7 +2,6 @@ package com.omgdendi.blps.controller.rest;
 
 import com.omgdendi.blps.dto.CategoryDTO;
 import com.omgdendi.blps.dto.CategoryToGetDTO;
-import com.omgdendi.blps.entity.CategoryEntity;
 import com.omgdendi.blps.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

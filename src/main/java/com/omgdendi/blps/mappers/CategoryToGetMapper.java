@@ -1,6 +1,5 @@
 package com.omgdendi.blps.mappers;
 
-import com.omgdendi.blps.dto.CategoryDTO;
 import com.omgdendi.blps.dto.CategoryToGetDTO;
 import com.omgdendi.blps.entity.CategoryEntity;
 import org.mapstruct.Mapper;
