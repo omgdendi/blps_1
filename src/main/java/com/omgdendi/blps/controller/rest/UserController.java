@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/auth")
 public class UserController {
 
     private final UserService userService;
@@ -19,17 +19,20 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Operation(summary = "Регистрация пользователя")
+    @Operation(summary = "Авторизация пользователя")
     @PostMapping
-    public ResponseEntity<?> registration(@RequestBody UserDTO user) {
+    public ResponseEntity<?> authorizate(@RequestBody UserDTO user) {
         userService.registration(user);
         return ResponseEntity.ok("Пользователь был успешно сохранен");
     }
 
-
-    @Operation(summary = "Получить пользователя")
+    @Operation(summary = "Аутентификация пользователя")
     @GetMapping
-    public ResponseEntity<UserDTO> getUser(@RequestParam Integer id) {
-        return ResponseEntity.ok(userService.getUser(id));
+    public ResponseEntity<?> authenticate(@RequestBody UserDTO userRequest) {
+        UserDTO user = userService.getUser(userRequest.getUsername());
+        if (user != null)
+            if (userRequest.getPassword().equals(user.getPassword()))
+                return ResponseEntity.ok(user);
+        return ResponseEntity.status(404).body("Неверный логин или пароль");
     }
 }
