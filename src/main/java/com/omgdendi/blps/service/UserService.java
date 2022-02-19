@@ -26,7 +26,7 @@ public class UserService {
         return UserMapper.INSTANCE.toDTO(userRepo.save(UserMapper.INSTANCE.toEntity(user)));
     }
 
-    public UserDTO getUser(Long id) {
+    public UserDTO getUser(Integer id) {
         return UserMapper.INSTANCE.toDTO(userRepo.findById(id).get());
     }
 }

@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EssayToGetDTO {
-    private Long id;
+    private Integer id;
     private String title;
     private String author;
     private String content;

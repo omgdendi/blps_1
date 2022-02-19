@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface CategoryRepo extends CrudRepository<CategoryEntity, Long> {
+public interface CategoryRepo extends CrudRepository<CategoryEntity, Integer> {
     Optional<CategoryEntity> findByName(String name);
     Optional<CategoryEntity> findById(Long id);
     List<CategoryEntity> findAll();

@@ -12,7 +12,7 @@ import java.util.Date;
 public class EssayEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @NotNull
     private String title;
     @NotNull

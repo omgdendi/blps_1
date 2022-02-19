@@ -3,7 +3,8 @@ package com.omgdendi.blps.controller.rest;
 import com.omgdendi.blps.dto.EssayDTO;
 import com.omgdendi.blps.dto.EssayToGetDTO;
 import com.omgdendi.blps.service.EssayService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,29 +21,41 @@ public class EssayController {
     public EssayController(EssayService essayService) {
         this.essayService = essayService;
     }
-    @ApiOperation (value = "получить", notes = "получить")
+
+    @Operation(summary = "Создать письменный материал")
     @PostMapping
     public ResponseEntity<EssayDTO> createEssay(@RequestBody EssayDTO essay) {
         return ResponseEntity.ok(essayService.createEssay(essay));
     }
-    @ApiOperation (value = "получить", notes = "получить")
-    @GetMapping
-    public ResponseEntity<EssayToGetDTO> getEssay(@RequestParam Long essayId) {
-        return ResponseEntity.ok(essayService.getEssay(essayId));
+
+    @Operation(summary = "Получить письменный материал по указанному id")
+    @GetMapping("/{id}")
+    public ResponseEntity<EssayToGetDTO> getEssay(@Parameter(description = "id письменного материла")
+                                                      @PathVariable int id) {
+        return ResponseEntity.ok(essayService.getEssay(id));
     }
-    @ApiOperation(value = "получить", notes = "получить")
+
+    @Operation(summary = "Получить письменный материал по указанному заголовку")
     @GetMapping("/title")
-    public ResponseEntity<List<EssayToGetDTO>> getEssaysByTitle(@RequestParam String title) {
+    public ResponseEntity<List<EssayToGetDTO>> getEssaysByTitle(
+            @Parameter(description = "заголовок письменного материла")
+            @RequestParam String title) {
         return ResponseEntity.ok(essayService.getEssaysByTitle(title));
     }
-    @ApiOperation (value = "получить", notes = "получить")
-    @GetMapping("/category")
-    public ResponseEntity<List<EssayToGetDTO>> getEssaysByCategory(@RequestParam Long categoryId) {
-        return ResponseEntity.ok(essayService.getEssaysByCategory(categoryId));
+
+    @Operation(summary = "Получить все письменные материалы по указанной категории")
+    @GetMapping("/category/{id}")
+    public ResponseEntity<List<EssayToGetDTO>> getEssaysByCategory(
+            @Parameter(description = "id категории письменного материла")
+            @PathVariable int id) {
+        return ResponseEntity.ok(essayService.getEssaysByCategory(id));
     }
-    @ApiOperation (value = "получить", notes = "получить")
-    @GetMapping("/recent")
-    public ResponseEntity<List<EssayToGetDTO>> getRecentEssays(int count) {
-        return ResponseEntity.ok(essayService.getRecentEssays(count));
+
+    @Operation(summary = "Получить определенное количество письменныех материалов, " +
+            "отсортированных по дате загрузки (от более ранних до более поздних)")
+    @GetMapping("/recent/{amount}")
+    public ResponseEntity<List<EssayToGetDTO>> getRecentEssays(  @Parameter(description = "количество письменного материла")
+                                                                             int amount) {
+        return ResponseEntity.ok(essayService.getRecentEssays(amount));
     }
 }

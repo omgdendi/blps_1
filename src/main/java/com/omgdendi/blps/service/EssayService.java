@@ -47,7 +47,7 @@ public class EssayService {
         return EssayMapper.INSTANCE.toDTO(essayRepo.save(entity));
     }
 
-    public EssayToGetDTO getEssay(Long id) throws EssayNotFoundException {
+    public EssayToGetDTO getEssay(Integer id) throws EssayNotFoundException {
         EssayEntity essay = essayRepo.findById(id).get();
         if (essay == null) {
             throw new EssayNotFoundException();
@@ -60,8 +60,8 @@ public class EssayService {
         return essays.stream().map(essay -> EssayToGetMapper.INSTANCE.toDTO(essay)).collect(Collectors.toList());
     }
 
-    public List<EssayToGetDTO> getEssaysByCategory(Long categoryId) {
-        List<EssayEntity> essays = essayRepo.findAllByCategory(categoryId);
+    public List<EssayToGetDTO> getEssaysByCategory(Integer id) {
+        List<EssayEntity> essays = essayRepo.findAllByCategory(id);
         return essays.stream().map(essay -> EssayToGetMapper.INSTANCE.toDTO(essay)).collect(Collectors.toList());
     }
 

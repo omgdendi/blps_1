@@ -14,6 +14,6 @@ public class EssayDTO {
     private String author;
     @NotNull
     private String content;
-    private Long userId;
+    private Integer userId;
     private String categoryName;
 }
