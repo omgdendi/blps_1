@@ -3,6 +3,7 @@ package com.omgdendi.blps.controller.rest;
 import com.omgdendi.blps.dto.EssayDTO;
 import com.omgdendi.blps.dto.EssayToGetDTO;
 import com.omgdendi.blps.service.EssayService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,27 +20,27 @@ public class EssayController {
     public EssayController(EssayService essayService) {
         this.essayService = essayService;
     }
-
+    @ApiOperation (value = "получить", notes = "получить")
     @PostMapping
     public ResponseEntity<EssayDTO> createEssay(@RequestBody EssayDTO essay) {
         return ResponseEntity.ok(essayService.createEssay(essay));
     }
-
+    @ApiOperation (value = "получить", notes = "получить")
     @GetMapping
     public ResponseEntity<EssayToGetDTO> getEssay(@RequestParam Long essayId) {
         return ResponseEntity.ok(essayService.getEssay(essayId));
     }
-
+    @ApiOperation(value = "получить", notes = "получить")
     @GetMapping("/title")
     public ResponseEntity<List<EssayToGetDTO>> getEssaysByTitle(@RequestParam String title) {
         return ResponseEntity.ok(essayService.getEssaysByTitle(title));
     }
-
+    @ApiOperation (value = "получить", notes = "получить")
     @GetMapping("/category")
     public ResponseEntity<List<EssayToGetDTO>> getEssaysByCategory(@RequestParam Long categoryId) {
         return ResponseEntity.ok(essayService.getEssaysByCategory(categoryId));
     }
-
+    @ApiOperation (value = "получить", notes = "получить")
     @GetMapping("/recent")
     public ResponseEntity<List<EssayToGetDTO>> getRecentEssays(int count) {
         return ResponseEntity.ok(essayService.getRecentEssays(count));
