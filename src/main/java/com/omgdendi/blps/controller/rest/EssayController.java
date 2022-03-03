@@ -35,7 +35,7 @@ public class EssayController {
         return ResponseEntity.ok(essayService.getEssay(id));
     }
 
-    @Operation(summary = "Получить письменный материал по указанному заголовку")
+    @Operation(summary = "Получить все письменные материала по совпадению с указанным заголовком")
     @GetMapping("/title")
     public ResponseEntity<List<EssayToGetDTO>> getEssaysByTitle(
             @Parameter(description = "заголовок письменного материла")

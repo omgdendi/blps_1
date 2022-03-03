@@ -1,32 +1,69 @@
 package com.omgdendi.blps.service;
 
 import com.omgdendi.blps.dto.UserDTO;
+import com.omgdendi.blps.dto.req.RegistrationReqDto;
+import com.omgdendi.blps.entity.RoleEntity;
 import com.omgdendi.blps.entity.UserEntity;
-import com.omgdendi.blps.exception.CategoryAlreadyExistException;
 import com.omgdendi.blps.exception.UserAlreadyExistException;
 import com.omgdendi.blps.mappers.UserMapper;
+import com.omgdendi.blps.repository.RoleRepo;
 import com.omgdendi.blps.repository.UserRepo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
+@Slf4j
 public class UserService {
 
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
+    private final RoleRepo roleRepo;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, RoleRepo roleRepo, BCryptPasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
+        this.roleRepo = roleRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public UserDTO registration(UserDTO user) throws UserAlreadyExistException {
-        if (userRepo.findByUsername(user.getUsername()).isPresent()) {
-            throw new CategoryAlreadyExistException();
+    public UserEntity registration(RegistrationReqDto registrationReqDto) throws UserAlreadyExistException {
+        String usernameFromDto = registrationReqDto.getUsername();
+
+        if (userRepo.findByUsername(usernameFromDto) == null) {
+
+            UserEntity user = new UserEntity();
+            user.setUsername(registrationReqDto.getUsername());
+            user.setPassword(passwordEncoder.encode(registrationReqDto.getPassword()));
+            RoleEntity roleUser = roleRepo.findByName("ROLE_USER");
+            List<RoleEntity> userRoles = new ArrayList<>();
+            userRoles.add(roleUser);
+
+            user.setRoles(userRoles);
+
+            UserEntity registeredUser = userRepo.save(user);
+            log.info("IN register - user: {} successfully registered", registeredUser);
+
+            return registeredUser;
+        } else {
+            log.error("User with username: " + usernameFromDto + " already exists");
+            throw new UserAlreadyExistException();
         }
-        return UserMapper.INSTANCE.toDTO(userRepo.save(UserMapper.INSTANCE.toEntity(user)));
     }
+
+
+
+
 
     public UserDTO getUser(String username) {
         return UserMapper.INSTANCE.toDTO(userRepo.findByUsername(username).get());
+    }
+
+    public UserEntity findByUsername(String username) {
+        return userRepo.findByUsername(username).get();
     }
 }
