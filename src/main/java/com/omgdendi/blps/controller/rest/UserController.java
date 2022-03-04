@@ -5,6 +5,7 @@ import com.omgdendi.blps.dto.UserDTO;
 import com.omgdendi.blps.dto.req.AuthenticationReqDto;
 import com.omgdendi.blps.dto.req.RegistrationReqDto;
 import com.omgdendi.blps.dto.res.AuthenticationResDto;
+import com.omgdendi.blps.entity.UserEntity;
 import com.omgdendi.blps.security.jwt.JwtFilter;
 import com.omgdendi.blps.security.jwt.JwtProvider;
 import com.omgdendi.blps.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,25 +38,31 @@ public class UserController {
     @Operation(summary = "Авторизация пользователя")
     @PostMapping("login")
     public ResponseEntity<AuthenticationResDto> login(@RequestBody @Valid AuthenticationReqDto authenticationReqDto) {
-            String username = authenticationReqDto.getUsername();
+        String username = authenticationReqDto.getUsername();
 
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
-                    authenticationReqDto.getPassword()));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
+                authenticationReqDto.getPassword()));
 
-            String token = jwtProvider.generateToken(username);
-            AuthenticationResDto authenticationResDto = new AuthenticationResDto(username, token);
-            return ResponseEntity.ok(authenticationResDto);
+        UserEntity user = userService.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User with username: " + username + " not found");
+        }
+
+        String token = jwtProvider.generateToken(username);
+        AuthenticationResDto authenticationResDto = new AuthenticationResDto(username, token);
+        return ResponseEntity.ok(authenticationResDto);
     }
 
 
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("register")
     public ResponseEntity<AuthenticationResDto> register(@RequestBody @Valid RegistrationReqDto registrationReqDto) {
-            String registeredUsername = userService.registration(registrationReqDto).getUsername();
+        String registeredUsername = userService.registration(registrationReqDto).getUsername();
 
-            String token = jwtProvider.generateToken(registeredUsername);
-            AuthenticationResDto authenticationResDto = new AuthenticationResDto(registeredUsername, token);
+        String token = jwtProvider.generateToken(registeredUsername);
+        AuthenticationResDto authenticationResDto = new AuthenticationResDto(registeredUsername, token);
 
-            return ResponseEntity.ok(authenticationResDto);
+        return ResponseEntity.ok(authenticationResDto);
     }
 }

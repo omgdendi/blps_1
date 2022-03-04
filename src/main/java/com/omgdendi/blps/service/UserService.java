@@ -34,8 +34,7 @@ public class UserService {
     public UserEntity registration(RegistrationReqDto registrationReqDto) throws UserAlreadyExistException {
         String usernameFromDto = registrationReqDto.getUsername();
 
-        if (userRepo.findByUsername(usernameFromDto) == null) {
-
+        if (userRepo.findByUsername(usernameFromDto).get() == null) {
             UserEntity user = new UserEntity();
             user.setUsername(registrationReqDto.getUsername());
             user.setPassword(passwordEncoder.encode(registrationReqDto.getPassword()));
@@ -57,13 +56,9 @@ public class UserService {
 
 
 
-
-
-    public UserDTO getUser(String username) {
-        return UserMapper.INSTANCE.toDTO(userRepo.findByUsername(username).get());
-    }
-
     public UserEntity findByUsername(String username) {
-        return userRepo.findByUsername(username).get();
+        UserEntity result = userRepo.findByUsername(username).get();
+        log.info("IN findByUsername - user: {} found by username: {}", result, username);
+        return result;
     }
 }
