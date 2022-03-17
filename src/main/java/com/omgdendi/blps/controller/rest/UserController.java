@@ -1,12 +1,10 @@
 package com.omgdendi.blps.controller.rest;
 
 
-import com.omgdendi.blps.dto.UserDTO;
 import com.omgdendi.blps.dto.req.AuthenticationReqDto;
 import com.omgdendi.blps.dto.req.RegistrationReqDto;
 import com.omgdendi.blps.dto.res.AuthenticationResDto;
 import com.omgdendi.blps.entity.UserEntity;
-import com.omgdendi.blps.security.jwt.JwtFilter;
 import com.omgdendi.blps.security.jwt.JwtProvider;
 import com.omgdendi.blps.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;

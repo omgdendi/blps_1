@@ -1,11 +1,9 @@
 package com.omgdendi.blps.service;
 
-import com.omgdendi.blps.dto.UserDTO;
 import com.omgdendi.blps.dto.req.RegistrationReqDto;
 import com.omgdendi.blps.entity.RoleEntity;
 import com.omgdendi.blps.entity.UserEntity;
 import com.omgdendi.blps.exception.UserAlreadyExistException;
-import com.omgdendi.blps.mappers.UserMapper;
 import com.omgdendi.blps.repository.RoleRepo;
 import com.omgdendi.blps.repository.UserRepo;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +30,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public UserEntity registration(RegistrationReqDto registrationReqDto) throws UserAlreadyExistException {
         String usernameFromDto = registrationReqDto.getUsername();
 

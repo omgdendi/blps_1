@@ -1,4 +1,4 @@
-package com.omgdendi.blps.dto;
+package com.omgdendi.blps.dto.res;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryToGetDTO {
+public class CategoryResDto {
     private Long id;
     private String name;
     private int count;

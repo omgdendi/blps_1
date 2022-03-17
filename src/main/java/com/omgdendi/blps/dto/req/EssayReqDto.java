@@ -1,20 +1,19 @@
-package com.omgdendi.blps.dto;
-
+package com.omgdendi.blps.dto.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EssayToGetDTO {
-    private Integer id;
+public class EssayReqDto {
+    @NotNull
     private String title;
     private String author;
+    @NotNull
     private String content;
-    private Date dateLoad;
-    private String category;
+    private Integer userId;
+    private String categoryName;
 }

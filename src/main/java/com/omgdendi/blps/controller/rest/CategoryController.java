@@ -1,7 +1,6 @@
 package com.omgdendi.blps.controller.rest;
 
-import com.omgdendi.blps.dto.CategoryDTO;
-import com.omgdendi.blps.dto.CategoryToGetDTO;
+import com.omgdendi.blps.dto.res.CategoryResDto;
 import com.omgdendi.blps.service.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,16 +22,10 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @Operation(summary = "Создать категорию")
-    @PostMapping
-    public ResponseEntity<?> createCategory(@RequestBody CategoryDTO category) {
-        categoryService.createCategory(category);
-        return ResponseEntity.ok("Категория была успешно создана");
-    }
 
     @Operation(summary = "Получить все категории")
     @GetMapping
-    public ResponseEntity<List<CategoryToGetDTO>> getAllCategories() {
+    public ResponseEntity<List<CategoryResDto>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 }

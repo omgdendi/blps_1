@@ -22,6 +22,10 @@ public class EssayEntity {
     @NotNull
     private Date dateLoad;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id")
+    private EssayStatusEntity status;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
