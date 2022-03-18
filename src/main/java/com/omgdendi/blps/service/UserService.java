@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -34,12 +35,12 @@ public class UserService {
     public UserEntity registration(RegistrationReqDto registrationReqDto) throws UserAlreadyExistException {
         String usernameFromDto = registrationReqDto.getUsername();
 
-        if (userRepo.findByUsername(usernameFromDto).isPresent()) {
+        if (!userRepo.findByUsername(usernameFromDto).isPresent()) {
             UserEntity user = new UserEntity();
             user.setUsername(registrationReqDto.getUsername());
             user.setPassword(passwordEncoder.encode(registrationReqDto.getPassword()));
             RoleEntity roleUser = roleRepo.findByName("ROLE_USER");
-            List<RoleEntity> userRoles = new ArrayList<>();
+            HashSet<RoleEntity> userRoles = new HashSet<>();
             userRoles.add(roleUser);
 
             user.setRoles(userRoles);
@@ -57,7 +58,7 @@ public class UserService {
 
 
     public UserEntity findByUsername(String username) {
-        UserEntity result = userRepo.findByUsername(username).get();
+        UserEntity result = userRepo.findByUsername(username).orElse(null);
         log.info("IN findByUsername - user: {} found by username: {}", result, username);
         return result;
     }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class UserController {
 
     private final UserService userService;
@@ -33,8 +33,8 @@ public class UserController {
     }
 
 
-    @Operation(summary = "Авторизация пользователя")
-    @PostMapping("login")
+    @Operation(summary = "Аутентификация пользователя")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResDto> login(@RequestBody @Valid AuthenticationReqDto authenticationReqDto) {
         String username = authenticationReqDto.getUsername();
 
@@ -53,8 +53,8 @@ public class UserController {
     }
 
 
-    @Operation(summary = "Регистрация пользователя")
-    @PostMapping("register")
+    @Operation(summary = "Авторизация пользователя")
+    @PostMapping("/register")
     public ResponseEntity<AuthenticationResDto> register(@RequestBody @Valid RegistrationReqDto registrationReqDto) {
         System.out.println("reg");
         String registeredUsername = userService.registration(registrationReqDto).getUsername();

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/essay")
+@RequestMapping("/api/v1/essay")
 public class EssayController {
 
     private final EssayService essayService;

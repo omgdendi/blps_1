@@ -46,14 +46,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-//    private SecurityContext securityContext() {
-//        return SecurityContext.builder().securityReferences(defaultAuth()).build();
-//    }
-//
-//    private List<SecurityReference> defaultAuth() {
-//        AuthorizationScope authorizationScope= new AuthorizationScope("global", "accessEverything");
-//        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-//        authorizationScopes[0] = authorizationScope;
-//        return Arrays.asList(new SecurityReference("JWT", authorizationScopes));
-//    }
+
 }
