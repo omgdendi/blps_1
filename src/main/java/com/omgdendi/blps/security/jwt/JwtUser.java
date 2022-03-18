@@ -19,11 +19,11 @@ public class JwtUser implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
-    public static JwtUser fromUserToJwtUser(UserEntity user) {
+    public static JwtUser fromUserToJwtUser(UserEntity user, Collection<? extends GrantedAuthority> grantedAuthorities) {
         JwtUser jwtUser = new JwtUser();
         jwtUser.username = user.getUsername();
         jwtUser.password = user.getPassword();
-        jwtUser.grantedAuthorities = mapToGrantedAuthorities(new ArrayList<>(user.getRoles()));
+        jwtUser.grantedAuthorities = grantedAuthorities;
         return jwtUser;
     }
 
@@ -61,12 +61,5 @@ public class JwtUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    private static List<GrantedAuthority> mapToGrantedAuthorities(List<RoleEntity> userRoles) {
-        return userRoles.stream()
-                .map(role ->
-                        new SimpleGrantedAuthority(role.getName())
-                ).collect(Collectors.toList());
     }
 }

@@ -3,6 +3,7 @@ package com.omgdendi.blps.service;
 import com.omgdendi.blps.dto.req.RegistrationReqDto;
 import com.omgdendi.blps.entity.RoleEntity;
 import com.omgdendi.blps.entity.UserEntity;
+import com.omgdendi.blps.entity.types.RoleType;
 import com.omgdendi.blps.exception.UserAlreadyExistException;
 import com.omgdendi.blps.repository.RoleRepo;
 import com.omgdendi.blps.repository.UserRepo;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -39,11 +41,8 @@ public class UserService {
             UserEntity user = new UserEntity();
             user.setUsername(registrationReqDto.getUsername());
             user.setPassword(passwordEncoder.encode(registrationReqDto.getPassword()));
-            RoleEntity roleUser = roleRepo.findByName("ROLE_USER");
-            HashSet<RoleEntity> userRoles = new HashSet<>();
-            userRoles.add(roleUser);
 
-            user.setRoles(userRoles);
+            user.setRoles(Arrays.asList(roleRepo.findByName(RoleType.user.toString())));
 
             UserEntity registeredUser = userRepo.save(user);
             log.info("IN register - user: {} successfully registered", registeredUser);
