@@ -16,10 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String LOGIN_ENDPOINT = "/auth/login";
-    private static final String REGISTRATION_ENDPOINT = "/auth/register";
-    private static final String SWAGGER_ENDPOINT = "/swagger-ui.html*";
-
     private final JwtFilter jwtFilter;
 
     @Autowired
@@ -35,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/**", "/**/*swagger*/**", "/v3/api-docs").permitAll()
+                .antMatchers("/api/auth/login", "/api/auth/register", "/**/*swagger*/**", "/v3/api-docs").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
