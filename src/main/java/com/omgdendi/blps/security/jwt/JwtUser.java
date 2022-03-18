@@ -1,5 +1,6 @@
 package com.omgdendi.blps.security.jwt;
 
+import com.omgdendi.blps.entity.PrivilegeEntity;
 import com.omgdendi.blps.entity.RoleEntity;
 import com.omgdendi.blps.entity.UserEntity;
 import lombok.Data;
@@ -24,6 +25,8 @@ public class JwtUser implements UserDetails {
         jwtUser.username = user.getUsername();
         jwtUser.password = user.getPassword();
         jwtUser.grantedAuthorities = grantedAuthorities;
+        System.out.println("jwt");
+        System.out.println(jwtUser.getGrantedAuthorities());
         return jwtUser;
     }
 

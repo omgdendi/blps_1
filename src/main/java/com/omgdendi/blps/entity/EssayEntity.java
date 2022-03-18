@@ -26,7 +26,7 @@ public class EssayEntity {
     @JoinColumn(name = "status_id")
     private EssayStatusEntity status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 

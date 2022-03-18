@@ -31,6 +31,7 @@ public class AdminController {
     @Operation(summary = "Выдать роль модератора")
     @PostMapping("/moderator/{username}")
     public ResponseEntity assignModerator(@PathVariable String username) throws RoleModeratorException {
+        System.out.println("sad");
         UserEntity user = userService.findByUsername(username);
 
         if (user == null)
