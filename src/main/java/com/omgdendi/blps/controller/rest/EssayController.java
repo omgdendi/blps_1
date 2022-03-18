@@ -3,7 +3,6 @@ package com.omgdendi.blps.controller.rest;
 import com.omgdendi.blps.dto.req.EssayReqDto;
 import com.omgdendi.blps.dto.res.EssayResDto;
 import com.omgdendi.blps.service.EssayService;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/essay")
-@Api(tags = "Clients")
 public class EssayController {
 
     private final EssayService essayService;

@@ -56,6 +56,7 @@ public class UserController {
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("register")
     public ResponseEntity<AuthenticationResDto> register(@RequestBody @Valid RegistrationReqDto registrationReqDto) {
+        System.out.println("reg");
         String registeredUsername = userService.registration(registrationReqDto).getUsername();
 
         String token = jwtProvider.generateToken(registeredUsername);

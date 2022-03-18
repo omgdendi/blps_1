@@ -2,7 +2,6 @@ package com.omgdendi.blps.controller.rest;
 
 import com.omgdendi.blps.dto.res.CategoryResDto;
 import com.omgdendi.blps.service.CategoryService;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/category")
-@Api(tags = "Clients")
 public class CategoryController {
 
     private final CategoryService categoryService;

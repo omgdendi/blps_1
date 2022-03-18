@@ -34,7 +34,7 @@ public class DbConfig {
     @Value("${spring.datasource.url}")
     private String url;
 
-    @Value("${spring.datasource.driverClassName}")
+    @Value("${spring.datasource.driver-class-name}")
     private String driverName;
 
     @Bean(name = "bitronixTransactionManager")

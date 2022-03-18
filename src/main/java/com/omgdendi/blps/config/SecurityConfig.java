@@ -16,10 +16,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //private static final String ADMIN_ENDPOINT = "/api/admin/**";
     private static final String LOGIN_ENDPOINT = "/auth/login";
     private static final String REGISTRATION_ENDPOINT = "/auth/register";
-    private static final String SWAGGER_ENDPOINT = "/swagger-ui/**";
+    private static final String SWAGGER_ENDPOINT = "/swagger-ui.html*";
 
     private final JwtFilter jwtFilter;
 
@@ -31,13 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .httpBasic().disable()
-                .csrf().disable()
+                .cors().and().csrf().disable().authorizeRequests()
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(LOGIN_ENDPOINT, REGISTRATION_ENDPOINT, SWAGGER_ENDPOINT).permitAll()
-               // .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
+                .antMatchers("/auth/**", "/**/*swagger*/**", "/v3/api-docs").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -48,5 +46,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
+//    private SecurityContext securityContext() {
+//        return SecurityContext.builder().securityReferences(defaultAuth()).build();
+//    }
+//
+//    private List<SecurityReference> defaultAuth() {
+//        AuthorizationScope authorizationScope= new AuthorizationScope("global", "accessEverything");
+//        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+//        authorizationScopes[0] = authorizationScope;
+//        return Arrays.asList(new SecurityReference("JWT", authorizationScopes));
+//    }
 }

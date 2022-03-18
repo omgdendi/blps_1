@@ -34,7 +34,7 @@ public class UserService {
     public UserEntity registration(RegistrationReqDto registrationReqDto) throws UserAlreadyExistException {
         String usernameFromDto = registrationReqDto.getUsername();
 
-        if (userRepo.findByUsername(usernameFromDto).get() == null) {
+        if (userRepo.findByUsername(usernameFromDto).isPresent()) {
             UserEntity user = new UserEntity();
             user.setUsername(registrationReqDto.getUsername());
             user.setPassword(passwordEncoder.encode(registrationReqDto.getPassword()));
