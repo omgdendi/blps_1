@@ -1,6 +1,5 @@
 package com.omgdendi.blps.security.jwt;
 
-import com.omgdendi.blps.entity.PrivilegeEntity;
 import com.omgdendi.blps.entity.RoleEntity;
 import com.omgdendi.blps.entity.UserEntity;
 import lombok.Data;
@@ -8,9 +7,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
@@ -20,13 +21,11 @@ public class JwtUser implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
-    public static JwtUser fromUserToJwtUser(UserEntity user, Collection<? extends GrantedAuthority> grantedAuthorities) {
+    public static JwtUser fromUserToJwtUser(UserEntity user) {
         JwtUser jwtUser = new JwtUser();
         jwtUser.username = user.getUsername();
         jwtUser.password = user.getPassword();
-        jwtUser.grantedAuthorities = grantedAuthorities;
-        System.out.println("jwt");
-        System.out.println(jwtUser.getGrantedAuthorities());
+        jwtUser.grantedAuthorities = mapToGrantedAuthorities(user.getRoles());
         return jwtUser;
     }
 
@@ -64,5 +63,12 @@ public class JwtUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    private static List<GrantedAuthority> mapToGrantedAuthorities(Set<RoleEntity> userRoles) {
+        return userRoles.stream()
+                .map(role ->
+                        new SimpleGrantedAuthority(role.getName())
+                ).collect(Collectors.toList());
     }
 }

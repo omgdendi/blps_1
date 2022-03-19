@@ -42,7 +42,7 @@ public class UserService {
             user.setUsername(registrationReqDto.getUsername());
             user.setPassword(passwordEncoder.encode(registrationReqDto.getPassword()));
 
-            user.setRoles(Arrays.asList(roleRepo.findByName(RoleType.user.toString())));
+            user.addRole(roleRepo.findByName(RoleType.user.toString()));
 
             UserEntity registeredUser = userRepo.save(user);
             log.info("IN register - user: {} successfully registered", registeredUser);

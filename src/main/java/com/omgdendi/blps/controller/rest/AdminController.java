@@ -31,7 +31,6 @@ public class AdminController {
     @Operation(summary = "Выдать роль модератора")
     @PostMapping("/moderator/{username}")
     public ResponseEntity assignModerator(@PathVariable String username) throws RoleModeratorException {
-        System.out.println("sad");
         UserEntity user = userService.findByUsername(username);
 
         if (user == null)
@@ -43,8 +42,7 @@ public class AdminController {
         if (userRoles.contains(moderatorRole))
             throw new RoleModeratorException("User with username: " + username + " already is moderator");
 
-        userRoles.add(moderatorRole);
-        user.setRoles(userRoles);
+        user.addRole(moderatorRole);
         userRepo.save(user);
         return ResponseEntity.ok("the moderator role was assigned to user with username: " + username);
     }
@@ -63,8 +61,7 @@ public class AdminController {
         if (!userRoles.contains(moderatorRole))
             throw new RoleModeratorException("User with username: " + username + " not assigned as moderator");
 
-        userRoles.remove(moderatorRole);
-        user.setRoles(userRoles);
+        user.removeRole(moderatorRole);
         userRepo.save(user);
         return ResponseEntity.ok("The moderator role was retrieved to user with username: " + username);
     }

@@ -23,17 +23,25 @@ public class UserEntity extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private Collection<EssayEntity> essays = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
-    private Collection<RoleEntity> roles = new HashSet<>();
+    private Set<RoleEntity> roles  = new HashSet<>();
 
     @Override
     public String toString(){
         return username;
+    }
+
+    public void addRole(RoleEntity role) {
+        roles.add(role);
+    }
+
+    public void removeRole(RoleEntity role) {
+        roles.remove(role);
     }
 }

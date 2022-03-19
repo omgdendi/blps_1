@@ -20,14 +20,6 @@ public class RoleEntity extends BaseEntity {
     @ManyToMany(mappedBy = "roles")
     private Collection<UserEntity> users;
 
-    @ManyToMany
-    @JoinTable(
-            name = "roles_privileges",
-            joinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "privilege_id", referencedColumnName = "id"))
-    private Collection<PrivilegeEntity> privileges;
 
     @Override
     public String toString() {
@@ -36,9 +28,8 @@ public class RoleEntity extends BaseEntity {
                 "name: " + name + "}";
     }
 
-    public RoleEntity(String name, Collection<PrivilegeEntity> privileges) {
+    public RoleEntity(String name) {
         this.name = name;
-        this.privileges = privileges;
     }
 
     public RoleEntity() {
