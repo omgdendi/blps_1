@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface UserRepo extends CrudRepository<UserEntity, Integer> {
     Optional<UserEntity> findByUsername(String username);
+
+    void saveAndFlush(UserEntity user);
 }

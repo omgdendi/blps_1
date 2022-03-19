@@ -7,8 +7,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -22,8 +25,10 @@ public class EssayController {
         this.essayService = essayService;
     }
 
+
+    @RolesAllowed("ROLE_USER")
     @Operation(summary = "Отправить запрос на подтверждение создания письменного материала")
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<EssayResDto> createEssay(@RequestBody EssayReqDto essay) {
         return ResponseEntity.ok(essayService.sendEssayToCheck(essay));
     }

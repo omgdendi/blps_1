@@ -29,7 +29,7 @@ public class ModeratorController {
     @Operation(summary = "Создать письменный материал")
     @PostMapping("/essay/create")
     public ResponseEntity<EssayResDto> createEssay(@RequestBody EssayReqDto essay) {
-        return ResponseEntity.ok(essayService.createEssay(essay));
+        return ResponseEntity.ok(essayService.createApprovedEssay(essay));
     }
 
     @Operation(summary = "Создать категорию")

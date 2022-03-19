@@ -6,6 +6,7 @@ import com.omgdendi.blps.entity.CategoryEntity;
 import com.omgdendi.blps.entity.EssayEntity;
 import com.omgdendi.blps.entity.EssayStatusEntity;
 import com.omgdendi.blps.entity.UserEntity;
+import com.omgdendi.blps.entity.types.EssayStatus;
 import com.omgdendi.blps.exception.CategoryNotFoundException;
 import com.omgdendi.blps.exception.EssayNotFoundException;
 import com.omgdendi.blps.mappers.EssayReqMapper;
@@ -40,34 +41,43 @@ public class EssayService {
         this.essayStatusRepo = essayStatusRepo;
     }
 
+
+    @Transactional
+    public EssayResDto createApprovedEssay(EssayReqDto essay) throws CategoryNotFoundException {
+        UserEntity user = userRepo.findByUsername(essay.getUsername()).get();
+        EssayStatusEntity approvedStatus = essayStatusRepo.findByName(EssayStatus.approved.toString());
+
+        CategoryEntity category = categoryService.getCategoryByName(essay.getCategoryName());
+        EssayEntity entity = this.essayConvertor(essay, user, category, approvedStatus);
+        return EssayResMapper.INSTANCE.toDTO(essayRepo.save(entity));
+    }
+
     public EssayResDto createEssay(EssayReqDto essay) throws CategoryNotFoundException {
-        UserEntity user = userRepo.findById(essay.getUserId()).get();
+        UserEntity user = userRepo.findByUsername(essay.getUsername()).get();
         CategoryEntity category = categoryService.getCategoryByName(essay.getCategoryName());
         EssayEntity entity = this.essayConvertor(essay, user, category);
         return EssayResMapper.INSTANCE.toDTO(essayRepo.save(entity));
     }
 
-    @Transactional
     public void setPassStatusToEssay(Integer id) {
         EssayEntity essay = essayRepo.findById(id).get();
-        EssayStatusEntity status = essayStatusRepo.findByName("PASS");
+        EssayStatusEntity status = essayStatusRepo.findByName(EssayStatus.approved.toString());
+        essay.setStatus(status);
+        essayRepo.save(essay);
+    }
+
+    public void setFailStatusToEssay(Integer id) {
+        EssayEntity essay = essayRepo.findById(id).get();
+        EssayStatusEntity status = essayStatusRepo.findByName(EssayStatus.failed.toString());
         essay.setStatus(status);
         essayRepo.save(essay);
     }
 
     @Transactional
-    public void setFailStatusToEssay(Integer id) {
-        EssayEntity essay = essayRepo.findById(id).get();
-        EssayStatusEntity status = essayStatusRepo.findByName("FAIL");
-        essay.setStatus(status);
-        essayRepo.save(essay);
-    }
-
-
     public EssayResDto sendEssayToCheck(EssayReqDto essay) throws CategoryNotFoundException {
-        UserEntity user = userRepo.findById(essay.getUserId()).get();
+        UserEntity user = userRepo.findByUsername(essay.getUsername()).get();
         CategoryEntity category = categoryService.getCategoryByName(essay.getCategoryName());
-        EssayStatusEntity status = essayStatusRepo.findByName("CHECK");
+        EssayStatusEntity status = essayStatusRepo.findByName(EssayStatus.not_approved.toString());
         EssayEntity entity = this.essayConvertor(essay, user, category);
         entity.setStatus(status);
         return EssayResMapper.INSTANCE.toDTO(essayRepo.save(entity));
@@ -81,6 +91,20 @@ public class EssayService {
         entity.setCategory(category);
         entity.setUser(user);
         entity.setDateLoad(new Date());
+        EssayStatusEntity notApprovedStatus = essayStatusRepo.findByName(EssayStatus.not_approved.toString());
+        if (notApprovedStatus != null) entity.setStatus(notApprovedStatus);
+        return entity;
+    }
+
+    private EssayEntity essayConvertor(EssayReqDto essay, UserEntity user, CategoryEntity category, EssayStatusEntity status) {
+        EssayEntity entity = new EssayEntity();
+        entity.setTitle(essay.getTitle());
+        entity.setAuthor(essay.getAuthor());
+        entity.setContent(essay.getContent());
+        entity.setCategory(category);
+        entity.setUser(user);
+        entity.setDateLoad(new Date());
+        entity.setStatus(status);
         return entity;
     }
 

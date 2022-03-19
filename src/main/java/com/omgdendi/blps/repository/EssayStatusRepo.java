@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EssayStatusRepo extends CrudRepository<EssayStatusEntity, Long> {
     EssayStatusEntity findByName(String name);
+
+    void saveAndFlush(EssayStatusEntity statusEntity);
 }
