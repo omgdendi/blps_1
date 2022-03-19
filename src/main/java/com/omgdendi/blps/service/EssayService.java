@@ -9,7 +9,6 @@ import com.omgdendi.blps.entity.UserEntity;
 import com.omgdendi.blps.entity.types.EssayStatus;
 import com.omgdendi.blps.exception.CategoryNotFoundException;
 import com.omgdendi.blps.exception.EssayNotFoundException;
-import com.omgdendi.blps.mappers.EssayReqMapper;
 import com.omgdendi.blps.mappers.EssayResMapper;
 import com.omgdendi.blps.repository.EssayRepo;
 import com.omgdendi.blps.repository.EssayStatusRepo;
