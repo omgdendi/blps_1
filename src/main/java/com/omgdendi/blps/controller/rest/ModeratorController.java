@@ -5,12 +5,12 @@ import com.omgdendi.blps.dto.req.EssayReqDto;
 import com.omgdendi.blps.dto.res.EssayResDto;
 import com.omgdendi.blps.service.CategoryService;
 import com.omgdendi.blps.service.EssayService;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -33,7 +33,8 @@ public class ModeratorController {
     @Operation(summary = "Создать письменный материал")
     @PostMapping("/essay/create")
     public ResponseEntity<EssayResDto> createEssay(@RequestBody EssayReqDto essay) {
-        return ResponseEntity.ok(essayService.createApprovedEssay(essay));
+        String principal = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(essayService.createApprovedEssay(essay, principal));
     }
 
     @Operation(summary = "Создать категорию")

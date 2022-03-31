@@ -25,13 +25,6 @@ public class EssayController {
         this.essayService = essayService;
     }
 
-
-    @Operation(summary = "Отправить запрос на подтверждение создания письменного материала")
-    @PostMapping("/create")
-    public ResponseEntity<EssayResDto> createEssay(@RequestBody EssayReqDto essay) {
-        return ResponseEntity.ok(essayService.sendEssayToCheck(essay));
-    }
-
     @Operation(summary = "Получить письменный материал по указанному id")
     @GetMapping("/{id}")
     public ResponseEntity<EssayResDto> getEssay(@Parameter(description = "id письменного материла")

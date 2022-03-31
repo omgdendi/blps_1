@@ -14,6 +14,5 @@ public class EssayReqDto {
     private String author;
     @NotNull
     private String content;
-    private String username;
     private String categoryName;
 }

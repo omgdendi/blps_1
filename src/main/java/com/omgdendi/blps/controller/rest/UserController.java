@@ -1,66 +1,44 @@
 package com.omgdendi.blps.controller.rest;
 
-
-import com.omgdendi.blps.dto.req.AuthenticationReqDto;
-import com.omgdendi.blps.dto.req.RegistrationReqDto;
-import com.omgdendi.blps.dto.res.AuthenticationResDto;
-import com.omgdendi.blps.entity.UserEntity;
-import com.omgdendi.blps.security.jwt.JwtProvider;
+import com.omgdendi.blps.dto.req.EssayReqDto;
+import com.omgdendi.blps.dto.res.EssayResDto;
+import com.omgdendi.blps.dto.res.NotificationResDto;
+import com.omgdendi.blps.service.EssayService;
 import com.omgdendi.blps.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import javax.annotation.security.RolesAllowed;
+import java.util.List;
 
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("api/user")
 public class UserController {
 
     private final UserService userService;
-    private final JwtProvider jwtProvider;
-    private final AuthenticationManager authenticationManager;
+    private final EssayService essayService;
 
     @Autowired
-    public UserController(UserService userService, JwtProvider jwtProvider, AuthenticationManager authenticationManager) {
+    public UserController(UserService userService, EssayService essayService) {
         this.userService = userService;
-        this.jwtProvider = jwtProvider;
-        this.authenticationManager = authenticationManager;
+        this.essayService = essayService;
     }
 
-
-    @Operation(summary = "Аутентификация пользователя")
-    @PostMapping("/login")
-    public ResponseEntity<AuthenticationResDto> login(@RequestBody @Valid AuthenticationReqDto authenticationReqDto) {
-        String username = authenticationReqDto.getUsername();
-
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
-                authenticationReqDto.getPassword()));
-
-        UserEntity user = userService.findByUsername(username);
-
-        if (user == null) {
-            throw new UsernameNotFoundException("User with username: " + username + " not found");
-        }
-
-        String token = jwtProvider.generateToken(username);
-        AuthenticationResDto authenticationResDto = new AuthenticationResDto(username, token);
-        return ResponseEntity.ok(authenticationResDto);
+    @Operation(summary = "Получить все уведомления")
+    @GetMapping("/notifications")
+    public ResponseEntity<List<NotificationResDto>> getNotifications() {
+        String principal = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<NotificationResDto> notifications = userService.getNotification(principal);
+        return ResponseEntity.ok(notifications);
     }
 
-
-    @Operation(summary = "Авторизация пользователя")
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResDto> register(@RequestBody @Valid RegistrationReqDto registrationReqDto) {
-        String registeredUsername = userService.registration(registrationReqDto).getUsername();
-
-        String token = jwtProvider.generateToken(registeredUsername);
-        AuthenticationResDto authenticationResDto = new AuthenticationResDto(registeredUsername, token);
-
-        return ResponseEntity.ok(authenticationResDto);
+    @Operation(summary = "Отправить запрос на подтверждение создания письменного материала")
+    @PostMapping("/create")
+    public ResponseEntity<EssayResDto> createEssay(@RequestBody EssayReqDto essay) {
+        String principal = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(essayService.sendEssayToCheck(essay, principal));
     }
 }

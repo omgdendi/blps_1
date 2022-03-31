@@ -1,7 +1,6 @@
 package com.omgdendi.blps.security;
 
 import com.omgdendi.blps.entity.UserEntity;
-import com.omgdendi.blps.repository.RoleRepo;
 import com.omgdendi.blps.security.jwt.JwtUser;
 import com.omgdendi.blps.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

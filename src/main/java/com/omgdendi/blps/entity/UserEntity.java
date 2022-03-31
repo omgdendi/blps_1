@@ -23,6 +23,10 @@ public class UserEntity extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private Collection<EssayEntity> essays = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private Collection<NotificationEntity> notifications = new HashSet<>();
+
+
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
