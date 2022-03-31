@@ -6,7 +6,7 @@ import com.omgdendi.blps.entity.CategoryEntity;
 import com.omgdendi.blps.entity.EssayEntity;
 import com.omgdendi.blps.entity.EssayStatusEntity;
 import com.omgdendi.blps.entity.UserEntity;
-import com.omgdendi.blps.entity.types.EssayStatus;
+import com.omgdendi.blps.types.EssayStatus;
 import com.omgdendi.blps.exception.CategoryNotFoundException;
 import com.omgdendi.blps.exception.EssayNotFoundException;
 import com.omgdendi.blps.mappers.EssayResMapper;
@@ -44,7 +44,7 @@ public class EssayService {
     @Transactional
     public EssayResDto createApprovedEssay(EssayReqDto essay) throws CategoryNotFoundException {
         UserEntity user = userRepo.findByUsername(essay.getUsername()).get();
-        EssayStatusEntity approvedStatus = essayStatusRepo.findByName(EssayStatus.approved.toString());
+        EssayStatusEntity approvedStatus = essayStatusRepo.findByName(EssayStatus.APPROVED);
 
         CategoryEntity category = categoryService.getCategoryByName(essay.getCategoryName());
         EssayEntity entity = this.essayConvertor(essay, user, category, approvedStatus);
@@ -60,14 +60,14 @@ public class EssayService {
 
     public void setPassStatusToEssay(Integer id) {
         EssayEntity essay = essayRepo.findById(id).get();
-        EssayStatusEntity status = essayStatusRepo.findByName(EssayStatus.approved.toString());
+        EssayStatusEntity status = essayStatusRepo.findByName(EssayStatus.APPROVED);
         essay.setStatus(status);
         essayRepo.save(essay);
     }
 
     public void setFailStatusToEssay(Integer id) {
         EssayEntity essay = essayRepo.findById(id).get();
-        EssayStatusEntity status = essayStatusRepo.findByName(EssayStatus.failed.toString());
+        EssayStatusEntity status = essayStatusRepo.findByName(EssayStatus.FAILED);
         essay.setStatus(status);
         essayRepo.save(essay);
     }
@@ -76,7 +76,7 @@ public class EssayService {
     public EssayResDto sendEssayToCheck(EssayReqDto essay) throws CategoryNotFoundException {
         UserEntity user = userRepo.findByUsername(essay.getUsername()).get();
         CategoryEntity category = categoryService.getCategoryByName(essay.getCategoryName());
-        EssayStatusEntity status = essayStatusRepo.findByName(EssayStatus.not_approved.toString());
+        EssayStatusEntity status = essayStatusRepo.findByName(EssayStatus.NOT_APPROVED);
         EssayEntity entity = this.essayConvertor(essay, user, category);
         entity.setStatus(status);
         return EssayResMapper.INSTANCE.toDTO(essayRepo.save(entity));
@@ -90,7 +90,7 @@ public class EssayService {
         entity.setCategory(category);
         entity.setUser(user);
         entity.setDateLoad(new Date());
-        EssayStatusEntity notApprovedStatus = essayStatusRepo.findByName(EssayStatus.not_approved.toString());
+        EssayStatusEntity notApprovedStatus = essayStatusRepo.findByName(EssayStatus.NOT_APPROVED);
         if (notApprovedStatus != null) entity.setStatus(notApprovedStatus);
         return entity;
     }

@@ -1,6 +1,8 @@
 package com.omgdendi.blps.config;
 
+import com.omgdendi.blps.entity.PrivilegeEntity;
 import com.omgdendi.blps.security.jwt.JwtFilter;
+import com.omgdendi.blps.types.PrivilegeType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,11 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .antMatchers("/api/moderator/*").hasAuthority("MODERATOR")
+                .antMatchers("/api/moderator/**").hasRole("MODERATOR")
                 .antMatchers("/api/v1/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/**/*swagger*/**", "/v*/api-docs").permitAll()
-//                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

@@ -1,9 +1,8 @@
 package com.omgdendi.blps.service;
 
 import com.omgdendi.blps.dto.req.RegistrationReqDto;
-import com.omgdendi.blps.entity.RoleEntity;
 import com.omgdendi.blps.entity.UserEntity;
-import com.omgdendi.blps.entity.types.RoleType;
+import com.omgdendi.blps.types.RoleType;
 import com.omgdendi.blps.exception.UserAlreadyExistException;
 import com.omgdendi.blps.repository.RoleRepo;
 import com.omgdendi.blps.repository.UserRepo;
@@ -13,10 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -42,7 +37,7 @@ public class UserService {
             user.setUsername(registrationReqDto.getUsername());
             user.setPassword(passwordEncoder.encode(registrationReqDto.getPassword()));
 
-            user.addRole(roleRepo.findByName(RoleType.user.toString()));
+            user.addRole(roleRepo.findByName(RoleType.USER));
 
             UserEntity registeredUser = userRepo.save(user);
             log.info("IN register - user: {} successfully registered", registeredUser);

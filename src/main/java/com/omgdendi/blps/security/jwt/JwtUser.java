@@ -1,5 +1,6 @@
 package com.omgdendi.blps.security.jwt;
 
+import com.omgdendi.blps.entity.PrivilegeEntity;
 import com.omgdendi.blps.entity.RoleEntity;
 import com.omgdendi.blps.entity.UserEntity;
 import lombok.Data;
@@ -71,4 +72,29 @@ public class JwtUser implements UserDetails {
                         new SimpleGrantedAuthority(role.getName())
                 ).collect(Collectors.toList());
     }
+
+//    private static Collection<? extends GrantedAuthority> getAuthorities(Collection<RoleEntity> roles) {
+//        return getGrantedAuthorities(getPrivileges(roles));
+//    }
+//
+//    private static List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        for (String privilege : privileges) {
+//            authorities.add(new SimpleGrantedAuthority(privilege));
+//        }
+//        return authorities;
+//    }
+//
+//    private static List<String> getPrivileges(Collection<RoleEntity> roles) {
+//        List<String> privileges = new ArrayList<>();
+//        List<PrivilegeEntity> collection = new ArrayList<>();
+//        for (RoleEntity role : roles) {
+//            privileges.add(role.getName());
+//            collection.addAll(role.getPrivileges());
+//        }
+//        for (PrivilegeEntity item : collection) {
+//            privileges.add(item.getName());
+//        }
+//        return privileges;
+//    }
 }

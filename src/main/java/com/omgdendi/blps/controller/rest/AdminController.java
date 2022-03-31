@@ -2,7 +2,7 @@ package com.omgdendi.blps.controller.rest;
 
 import com.omgdendi.blps.entity.RoleEntity;
 import com.omgdendi.blps.entity.UserEntity;
-import com.omgdendi.blps.entity.types.RoleType;
+import com.omgdendi.blps.types.RoleType;
 import com.omgdendi.blps.exception.RoleModeratorException;
 import com.omgdendi.blps.repository.RoleRepo;
 import com.omgdendi.blps.repository.UserRepo;
@@ -36,7 +36,7 @@ public class AdminController {
         if (user == null)
             throw new UsernameNotFoundException("User with username: " + username + " not found");
 
-        RoleEntity moderatorRole = this.roleRepo.findByName(RoleType.moderator.toString());
+        RoleEntity moderatorRole = this.roleRepo.findByName(RoleType.MODERATOR);
         Collection<RoleEntity> userRoles = user.getRoles();
 
         if (userRoles.contains(moderatorRole))
@@ -55,7 +55,7 @@ public class AdminController {
         if (user == null)
             throw new UsernameNotFoundException("User with username: " + username + " not found");
 
-        RoleEntity moderatorRole = this.roleRepo.findByName(RoleType.moderator.toString());
+        RoleEntity moderatorRole = this.roleRepo.findByName(RoleType.MODERATOR);
         Collection<RoleEntity> userRoles = user.getRoles();
 
         if (!userRoles.contains(moderatorRole))

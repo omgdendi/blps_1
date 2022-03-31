@@ -26,7 +26,6 @@ public class EssayController {
     }
 
 
-    @RolesAllowed("ROLE_USER")
     @Operation(summary = "Отправить запрос на подтверждение создания письменного материала")
     @PostMapping("/create")
     public ResponseEntity<EssayResDto> createEssay(@RequestBody EssayReqDto essay) {

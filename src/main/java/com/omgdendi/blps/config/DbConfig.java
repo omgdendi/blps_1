@@ -16,7 +16,7 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
 
-@Configuration
+//@Configuration
 @EnableTransactionManagement
 public class DbConfig {
 

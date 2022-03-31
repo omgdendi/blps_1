@@ -1,13 +1,19 @@
 package com.omgdendi.blps.entity;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 @Table(name = "roles")
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Data
 public class RoleEntity extends BaseEntity {
     @Id
@@ -20,18 +26,12 @@ public class RoleEntity extends BaseEntity {
     @ManyToMany(mappedBy = "roles")
     private Collection<UserEntity> users;
 
-
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id: " + this.getId() + ", " +
-                "name: " + name + "}";
-    }
-
-    public RoleEntity(String name) {
-        this.name = name;
-    }
-
-    public RoleEntity() {
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "roles_privileges",
+            joinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "privilege_id", referencedColumnName = "id"))
+    private Collection<PrivilegeEntity> privileges;
 }
