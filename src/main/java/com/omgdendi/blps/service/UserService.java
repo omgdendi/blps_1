@@ -4,12 +4,12 @@ import com.omgdendi.blps.dto.req.RegistrationReqDto;
 import com.omgdendi.blps.dto.res.NotificationResDto;
 import com.omgdendi.blps.entity.NotificationEntity;
 import com.omgdendi.blps.entity.UserEntity;
-import com.omgdendi.blps.entity.types.RoleType;
 import com.omgdendi.blps.exception.UserAlreadyExistException;
 import com.omgdendi.blps.mappers.NotificationResMapper;
 import com.omgdendi.blps.repository.NotificationRepo;
 import com.omgdendi.blps.repository.RoleRepo;
 import com.omgdendi.blps.repository.UserRepo;
+import com.omgdendi.blps.types.RoleType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,7 +43,7 @@ public class UserService {
             user.setUsername(registrationReqDto.getUsername());
             user.setPassword(passwordEncoder.encode(registrationReqDto.getPassword()));
 
-            user.addRole(roleRepo.findByName(RoleType.user.toString()));
+            user.addRole(roleRepo.findByName(RoleType.USER));
 
             UserEntity registeredUser = userRepo.save(user);
             log.info("IN register - user: {} successfully registered", registeredUser);

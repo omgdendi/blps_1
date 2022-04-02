@@ -3,6 +3,7 @@ package com.omgdendi.blps.config;
 
 import bitronix.tm.BitronixTransactionManager;
 import bitronix.tm.TransactionManagerServices;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +16,10 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
+import java.util.logging.Logger;
 
-//@Configuration
+@Configuration
+@Slf4j
 @EnableTransactionManagement
 public class DbConfig {
 
@@ -34,6 +37,7 @@ public class DbConfig {
 
     @Bean(name = "bitronixTransactionManager")
     public BitronixTransactionManager bitronixTransactionManager() throws Throwable {
+        log.error("!!! bitronixTransactionManager");
         BitronixTransactionManager bitronixTransactionManager =
                 TransactionManagerServices.getTransactionManager();
         bitronixTransactionManager.setTransactionTimeout(10000);
@@ -49,6 +53,7 @@ public class DbConfig {
     @Bean(name = "primaryPostgresqlDataSource")
     @Primary
     public DataSource primaryMySqlDataSource() {
+        log.error("!!! primaryPostgresqlDataSource");
         DriverManagerDataSource driver = new DriverManagerDataSource();
         driver.setDriverClassName(driverName);
         driver.setUrl(url);

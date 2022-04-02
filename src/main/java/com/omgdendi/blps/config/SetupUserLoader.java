@@ -11,16 +11,20 @@ import com.omgdendi.blps.repository.UserRepo;
 import com.omgdendi.blps.types.EssayStatus;
 import com.omgdendi.blps.types.PrivilegeType;
 import com.omgdendi.blps.types.RoleType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
 
+@Slf4j
 @Component
 public class SetupUserLoader implements ApplicationListener<ContextRefreshedEvent> {
     private final String adminUsername = "admin";
@@ -47,6 +51,8 @@ public class SetupUserLoader implements ApplicationListener<ContextRefreshedEven
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
+
+        log.error("!!! setup loader");
         if (alreadySetup) return;
 
         this.createStatusIfNotFound(EssayStatus.NOT_APPROVED);
