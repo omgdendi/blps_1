@@ -6,6 +6,7 @@ import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.quartz.SchedulerFactoryBeanCustomizer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +20,10 @@ import java.util.Properties;
 @Slf4j
 @Configuration
 public class QuartzConfig {
-    private ApplicationContext applicationContext;
-    private DataSource dataSource;
+    private final ApplicationContext applicationContext;
+    private final DataSource dataSource;
 
+    @Autowired
     public QuartzConfig(ApplicationContext applicationContext, DataSource dataSource) {
         this.applicationContext = applicationContext;
         this.dataSource = dataSource;
@@ -87,6 +89,27 @@ public class QuartzConfig {
         factoryBean.setMisfireInstruction(CronTrigger.MISFIRE_INSTRUCTION_DO_NOTHING);
 
         return factoryBean;
+    }
+
+    @Bean
+    public SchedulerFactoryBeanCustomizer schedulerFactoryBeanCustomizer()
+    {
+        return new SchedulerFactoryBeanCustomizer()
+        {
+            @Override
+            public void customize(SchedulerFactoryBean bean)
+            {
+                bean.setQuartzProperties(createQuartzProperties());
+            }
+        };
+    }
+
+    private Properties createQuartzProperties()
+    {
+        // Could also load from a file
+        Properties props = new Properties();
+        props.put("org.quartz.jobStore.driverDelegateClass", "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate");
+        return props;
     }
 
     static JobDetailFactoryBean createJobDetail(Class jobClass, String jobName) {
