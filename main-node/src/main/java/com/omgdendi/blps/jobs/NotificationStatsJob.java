@@ -1,4 +1,4 @@
-package com.omgdendi.blps.config.sheduler.jobs;
+package com.omgdendi.blps.jobs;
 
 import com.omgdendi.blps.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;

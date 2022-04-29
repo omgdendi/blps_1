@@ -8,6 +8,7 @@ import com.omgdendi.blps.repository.RoleRepo;
 import com.omgdendi.blps.repository.UserRepo;
 import com.omgdendi.blps.types.EssayStatus;
 import com.omgdendi.blps.types.RoleType;
+import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
