@@ -1,19 +1,18 @@
-package com.omgdendi.blps.config;
+package com.omgdendi.report.config;
 
 import com.omgdendi.blps.jobs.NotificationStatsJob;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.*;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Trigger;
+import org.quartz.TriggerKey;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
-
-import org.quartz.Trigger;
-import org.springframework.core.env.Environment;
 
 @Configuration
 @Slf4j

@@ -1,18 +1,14 @@
 package com.omgdendi.blps.service;
 
 import com.omgdendi.blps.entity.NotificationEntity;
-import com.omgdendi.blps.entity.RoleEntity;
 import com.omgdendi.blps.entity.UserEntity;
 import com.omgdendi.blps.repository.NotificationRepo;
 import com.omgdendi.blps.repository.RoleRepo;
 import com.omgdendi.blps.repository.UserRepo;
 import com.omgdendi.blps.types.EssayStatus;
-import com.omgdendi.blps.types.RoleType;
-import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Service
