@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "org.quartz.threadPool.threadCount",
+      "type": "java.lang.String",
+      "description": "Description for org.quartz.threadPool.threadCount."
+  }
+] }
