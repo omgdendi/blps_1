@@ -1,9 +1,10 @@
 package com.omgdendi.report.controller.handler.exception;
 
-import com.omgdendi.blps.exception.CategoryAlreadyExistException;
-import com.omgdendi.blps.exception.CategoryNotFoundException;
-import com.omgdendi.blps.exception.EssayNotFoundException;
-import com.omgdendi.blps.exception.UserAlreadyExistException;
+
+import com.omgdendi.report.exception.CategoryAlreadyExistException;
+import com.omgdendi.report.exception.CategoryNotFoundException;
+import com.omgdendi.report.exception.EssayNotFoundException;
+import com.omgdendi.report.exception.UserAlreadyExistException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -24,4 +24,5 @@ public class KafkaService {
         kafkaTemplate.send("msg", reportDto);
         log.info("Send message");
     }
+
 }

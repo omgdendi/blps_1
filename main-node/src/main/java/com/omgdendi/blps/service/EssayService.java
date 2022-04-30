@@ -15,12 +15,16 @@ import com.omgdendi.blps.repository.UserRepo;
 import com.omgdendi.blps.types.EssayStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class EssayService {
+
+    private ReportService reportService;
 
     private EssayRepo essayRepo;
 
@@ -36,7 +40,8 @@ public class EssayService {
 
 
     @Autowired
-    public EssayService(EssayRepo essayRepo, UserRepo userRepo, CategoryService categoryService, EssayStatusRepo essayStatusRepo, NotificationRepo notificationRepo, KafkaService kafkaService) {
+    public EssayService(ReportService reportService, EssayRepo essayRepo, UserRepo userRepo, CategoryService categoryService, EssayStatusRepo essayStatusRepo, NotificationRepo notificationRepo, KafkaService kafkaService) {
+        this.reportService = reportService;
         this.essayRepo = essayRepo;
         this.userRepo = userRepo;
         this.categoryService = categoryService;
@@ -45,6 +50,33 @@ public class EssayService {
         this.kafkaService = kafkaService;
     }
 
+    @Transactional
+    public void setPassStatusToEssay(Integer id) {
+        ReportEntity report = reportService.findById(id);
+        EssayEntity essay = report.getEssay();
+        EssayStatusEntity status = essayStatusRepo.findByName(EssayStatus.APPROVED);
+        essay.setStatus(status);
+        NotificationEntity notification = new NotificationEntity();
+        notification.setUser(essay.getUser());
+        notification.setDescription("Ваш реферат " + essay.getTitle() + " принят модератором и успешно добавлен");
+        essayRepo.save(essay);
+        notificationRepo.save(notification);
+        reportService.setNotActiveStatusToReport(report);
+    }
+
+    @Transactional
+    public void setFailStatusToEssay(Integer id) {
+        ReportEntity report = reportService.findById(id);
+        EssayEntity essay = report.getEssay();
+        EssayStatusEntity status = essayStatusRepo.findByName(EssayStatus.FAILED);
+        essay.setStatus(status);
+        NotificationEntity notification = new NotificationEntity();
+        notification.setUser(essay.getUser());
+        notification.setDescription("К сожалению ваш реферат " + essay.getTitle() + " отклонен модератором");
+        essayRepo.save(essay);
+        notificationRepo.save(notification);
+        reportService.setNotActiveStatusToReport(report);
+    }
 
     public EssayResDto createApprovedEssay(EssayReqDto essay, String username) throws CategoryNotFoundException {
         UserEntity user = userRepo.findByUsername(username).get();
